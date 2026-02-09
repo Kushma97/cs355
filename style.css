@@ -1,0 +1,32 @@
+body {
+  font-family: Arial, sans-serif;
+  background: white;
+  color: black;
+}
+
+body.dark {
+  background: #222;
+  color: white;
+}
+
+.row {
+  display: flex;
+  margin: 5px 0;
+}
+
+/* Dark mode button */
+#darkModeToggle {
+  position: fixed;
+  bottom: 15px;
+  right: 15px;
+  background: rgba(0,0,0,0.6);
+  color: white;
+  border: none;
+  padding: 10px;
+  cursor: pointer;
+}
+
+body.dark #darkModeToggle {
+  background: rgba(255,255,255,0.5);
+  color: black;
+}

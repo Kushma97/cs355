@@ -1,0 +1,29 @@
+<html>
+<head>
+  <title>Page 2</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<h1>Submitted Information</h1>
+
+<div id="results"></div>
+<a href="page1.html" class="back-link">← Back to Page 1</a>
+
+<button id="darkModeToggle">ON</button>
+
+<script src="script.js"></script>
+<script>
+  const params = new URLSearchParams(location.search);
+  const results = document.getElementById("results");
+
+  params.forEach((value, key) => {
+    const row = document.createElement("div");
+    row.className = "row";
+    row.textContent = key + ": " + value;
+    results.appendChild(row);
+  });
+</script>
+
+</body>
+</html>
