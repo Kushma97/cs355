@@ -1,0 +1,38 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.container {
+    background-color: white;
+    padding: 20px;
+    height: 600px;
+    width: 550px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px black;
+    box-align: center;
+    text-align: center;
+}
+
+input {
+    width: 100%;
+    padding: 8px;
+    margin: 8px 0;
+}
+
+button {
+    width: 100%;
+    padding: 10px;
+    background-color: #4c90af;
+    color: white;
+    border: none;
+    cursor: pointer;
+}
+
+#recipe-display {
+    margin-top: 15px;
+    text-align: left;
+}
