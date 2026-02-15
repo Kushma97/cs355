@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Dog Breeds</title>
+    <style>
+        input, button {
+            padding: 8px 12px;
+            font-size: 16px;
+        }
+
+        img {
+            margin-top: 20px;
+            max-width: 400px;
+            height: auto;
+            border-radius: 10px;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Search Dog Breeds</h1>
+
+    <input list="breedList" id="breedInput" placeholder="Type a dog breed...">
+    <datalist id="breedList"></datalist>
+
+    <br><br>
+    <button id="showBtn">Show Images</button>
+
+    <div id="message"></div>
+    <div id="imageContainer"></div>
+
+    <script>
+        const breedInput = document.getElementById("breedInput");
+        const breedList = document.getElementById("breedList");
+        const showBtn = document.getElementById("showBtn");
+        const messageDiv = document.getElementById("message");
+        const imageDiv = document.getElementById("imageContainer");
+
+        let intervalId = null;
+
+        fetch("https://dog.ceo/api/breeds/list/all")
+            .then(res => res.json())
+            .then(data => {
+                const breeds = data.message;
+
+                for (let breed in breeds) {
+                    if (breeds[breed].length === 0) {
+                        const option = document.createElement("option");
+                        option.value = breed;
+                        breedList.appendChild(option);
+                    } else {
+                        breeds[breed].forEach(sub => {
+                            const option = document.createElement("option");
+                            option.value = `${sub} ${breed}`; 
+                            breedList.appendChild(option);
+                        });
+                    }
+                }
+            });
+
+        function showImage(url) {
+            fetch(url)
+                .then(res => res.json())
+                .then(data => {
+                    imageDiv.innerHTML = `<img src="${data.message}" alt="Dog Image">`;
+                })
+                .catch(() => {
+                    messageDiv.textContent = "Error loading image!";
+                });
+        }
+
+        showBtn.addEventListener("click", () => {
+            const input = breedInput.value.toLowerCase().trim();
+            messageDiv.textContent = "";
+            imageDiv.innerHTML = "";
+
+            if (intervalId) {
+                clearInterval(intervalId);
+            }
+
+            if (!input) {
+                messageDiv.textContent = "Please type a breed!";
+                return;
+            }
+
+            const parts = input.split(" ");
+            let apiUrl = "";
+
+            if (parts.length === 1) {
+                apiUrl = `https://dog.ceo/api/breed/${parts[0]}/images/random`;
+            } else if (parts.length === 2) {
+                apiUrl = `https://dog.ceo/api/breed/${parts[1]}/${parts[0]}/images/random`;
+            } else {
+                messageDiv.textContent = "No such breed";
+                return;
+            }
+
+            fetch(apiUrl)
+                .then(res => res.json())
+                .then(data => {
+                    if (data.status === "error") {
+                        messageDiv.textContent = "No such breed";
+                        return;
+                    }
+
+                    showImage(apiUrl);
+
+                    intervalId = setInterval(() => {
+                        showImage(apiUrl);
+                    }, 5000);
+                })
+                .catch(() => {
+                    messageDiv.textContent = "No such breed";
+                });
+        });
+    </script>
+
+</body>
+</html>
